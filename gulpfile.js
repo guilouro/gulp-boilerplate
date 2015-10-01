@@ -1,7 +1,7 @@
 'use strict';
 
 var path = {
-    build: '../build',
+    build: 'build',
     src: 'assets',
 }
 
@@ -31,7 +31,7 @@ gulp.task('stylus', function() {
 
 
 gulp.task('jhint', function () {
-    return gulp.src([path.src'/js/**/*.js'])
+    return gulp.src([path.src+'/js/**/*.js'])
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('jshint-stylish'));
 });
