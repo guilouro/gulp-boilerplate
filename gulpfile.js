@@ -8,14 +8,18 @@ var path = {
 var gulp       = require('gulp')
 , stylus       = require('gulp-stylus')
 , plumber      = require('gulp-plumber')
+, browserify   = require('gulp-browserify')
+, browserSync  = require('browser-sync')
 , uglify       = require('gulp-uglify')
 , imagemin     = require('gulp-imagemin')
 , concat       = require('gulp-concat')
+, gulpif       = require('gulp-if')
 , jeet         = require('jeet')
 , autoprefixer = require('autoprefixer-stylus')
 , koutoSwiss   = require('kouto-swiss')
 , rupture      = require('rupture')
-, livereload   = require('gulp-livereload');
+, livereload   = require('gulp-livereload')
+, rsync        = require('rsyncwrapper').rsync;
 
 
 gulp.task('stylus', function() {
@@ -43,6 +47,15 @@ gulp.task('js', function() {
     .pipe(concat('main.js'))
     .pipe(uglify())
     .pipe(gulp.dest(path.build+'/js'))
+});
+
+
+gulp.task('browserify', function(){
+    return gulp.src(path.src+'/js/main.js')
+        .pipe(plumber())
+        .pipe(browserify({debug: !env.p }))
+        .pipe(gulpif(env.p, uglify()))
+        .pipe(gulp.dest('build/js'));
 });
 
 
