@@ -5,21 +5,22 @@ var path = {
     src: 'assets',
 }
 
-var gulp       = require('gulp')
-, stylus       = require('gulp-stylus')
-, plumber      = require('gulp-plumber')
-, browserify   = require('gulp-browserify')
-, browserSync  = require('browser-sync')
-, uglify       = require('gulp-uglify')
-, imagemin     = require('gulp-imagemin')
-, concat       = require('gulp-concat')
-, gulpif       = require('gulp-if')
-, jeet         = require('jeet')
-, autoprefixer = require('autoprefixer-stylus')
-, koutoSwiss   = require('kouto-swiss')
-, rupture      = require('rupture')
-, livereload   = require('gulp-livereload')
-, rsync        = require('rsyncwrapper').rsync;
+var env          = require('minimist')(process.argv.slice(2))
+  , gulp         = require('gulp')
+  , stylus       = require('gulp-stylus')
+  , plumber      = require('gulp-plumber')
+  , browserify   = require('gulp-browserify')
+  , browserSync  = require('browser-sync')
+  , uglify       = require('gulp-uglify')
+  , imagemin     = require('gulp-imagemin')
+  , concat       = require('gulp-concat')
+  , gulpif       = require('gulp-if')
+  , jeet         = require('jeet')
+  , autoprefixer = require('autoprefixer-stylus')
+  , koutoSwiss   = require('kouto-swiss')
+  , rupture      = require('rupture')
+  , livereload   = require('gulp-livereload')
+  , rsync        = require('rsyncwrapper').rsync;
 
 
 gulp.task('stylus', function() {
@@ -27,7 +28,7 @@ gulp.task('stylus', function() {
     .pipe(plumber())
     .pipe(stylus({
         use:[jeet(), autoprefixer(), koutoSwiss(), rupture()],
-        compress: true
+        compress: env.p
     }))
     .pipe(gulp.dest(path.build+'/css'))
     .pipe(livereload());

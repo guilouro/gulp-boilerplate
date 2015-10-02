@@ -20,6 +20,7 @@
     "jeet": "^6.1.2",
     "jshint-stylish": "^2.0.1",
     "kouto-swiss": "^0.11.13",
+    "minimist": "^1.2.0",
     "rsyncwrapper": "^0.4.3",
     "rupture": "^0.6.1"
   },
