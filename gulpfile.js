@@ -73,10 +73,49 @@ gulp.task('imagemin', function() {
 gulp.task('watch', function() {
     livereload.listen();
     gulp.watch(path.src+'/styl/main.styl', ['stylus']);
-    gulp.watch(path.src+'/js/**/*.js', ['js']);
+    gulp.watch(path.src+'/js/**/*.js', [ (env.fy) ? 'browserify' : 'js']);
     gulp.watch(path.src+'/img/**/*.{jpg, png, gif}', ['imagemin']);
 });
 
 
+gulp.task('browser-sync', function () {
+   var files = [
+      'build/**/*.html',
+      'build/css/**/*.css',
+      'build/img/**/*',
+      'build/js/**/*.js'
+   ];
 
-gulp.task('default', ['stylus', 'imagemin', 'watch']);
+   browserSync.init(files, {
+      server: {
+         baseDir: './build/'
+      }
+   });
+});
+
+gulp.task('deploy', function(){
+    rsync({
+        ssh: true,
+        src: './build/',
+        dest: 'user@hostname:/path/to/www',
+        recursive: true,
+        syncDest: true,
+        args: ['--verbose']
+    },
+        function (erro, stdout, stderr, cmd) {
+            gutil.log(stdout);
+    });
+});
+
+
+
+
+// For development => gulp
+// For production  => gulp --p
+// For use browserify  => gulp --fy
+
+// Task
+gulp.task('default', ['stylus', 'imagemin', 'watch', 'browser-sync']);
+
+// Build and Deploy
+gulp.task('build', [(env.fy) ? 'browserify' : 'js', 'stylus', 'imagemin', 'deploy']);
